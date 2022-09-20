@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model junta_directiva {
+  j_id    Int     @default(autoincrement()) @id
+  name  String?
+  email String  @unique
+  password String?
+  urlfoto String?
+  relac1 formulario[]
+
+}
+
+model estudiantes {
+  e_id    Int     @default(autoincrement()) @id
+  name  String?
+  email String  @unique
+  password String?
+  seccion String?
+  urlfoto String?
+  relac3 formulario[]
+  singer4    cursos?   @relation(fields: [singer4Id], references: [c_id])
+  singer4Id  Int?
+}
+
+model formulario {
+  f_id    Int     @default(autoincrement()) @id
+  pregunta  String?
+  released Boolean @default(false)
+  singer    junta_directiva?   @relation(fields: [singerId], references: [j_id])
+  singerId  Int?
+  singer2    respuestas?   @relation(fields: [singer2Id], references: [r_id])
+  singer2Id  Int?
+  singer3    estudiantes?   @relation(fields: [singer3Id], references: [e_id])
+  singer3Id  Int?
+}
+
+model respuestas {
+  r_id    Int     @default(autoincrement()) @id
+  respuesta  String?
+  relac2 formulario[]
+}
+
+model cursos {
+  c_id    Int     @default(autoincrement()) @id
+  codigo String?
+  name  String?
+  rela4 estudiantes[]
+  singer5    profesores?   @relation(fields: [singer5Id], references: [p_id])
+  singer5Id  Int?
+}
+
+model profesores {
+  p_id    Int     @default(autoincrement()) @id
+  name  String?
+  urlfoto String?
+  relac5 cursos[]
+}
